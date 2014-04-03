@@ -70,9 +70,16 @@ var ctrl ={
   saveList: function(){
     var listJ=JSON.stringify(this.list);
     localStorage.setItem('BZtodo', listJ);
-    $.post("../server/post.php", {data: listJ}).done(function(data){});     
+    //$.post("../server/post.php", {data: listJ}).done(function(data){});     
   },
   loadList: function(){
+    /*
+    var nqrep = 'list=BZtodo';
+    $.getJSON('../server/get.php', nqrep, function(data) {
+        var sdata= list.BZtodos = data.items;
+        localStorage.setItem('BZtodo',JSON.stringify(sdata));    
+    });
+    */
     if(localStorage.BZtodo!=undefined){
       this.list= JSON.parse(localStorage.BZtodo);
       view.refreshList(this.list.BZtodo);
