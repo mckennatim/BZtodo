@@ -69,7 +69,8 @@ var ctrl ={
   },
   saveList: function(){
     var listJ=JSON.stringify(this.list);
-    localStorage.setItem('BZtodo', listJ);     
+    localStorage.setItem('BZtodo', listJ);
+    $.post("../server/post.php", {data: listJ}).done(function(data){});     
   },
   loadList: function(){
     if(localStorage.BZtodo!=undefined){
