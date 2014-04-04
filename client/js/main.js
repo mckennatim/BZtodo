@@ -41,6 +41,7 @@ var ctrl ={
   list: {BZtodo:[]},
   priority: ['high', 'normal', 'low'],
   defaultPriority: 'normal',
+  urlqstr: 'list=BZtodo',
   defaultPriorityIdx: 1,
   priorityOptions: function(pridx){
     var ostr= '<select id="priority">';
@@ -68,22 +69,23 @@ var ctrl ={
     this.saveList();
   },
   saveList: function(){
+    console.log(this.urlqstr);
     var listJ=JSON.stringify(this.list);
     localStorage.setItem('BZtodo', listJ);
-    //$.post("../server/post.php", {data: listJ}).done(function(data){});     
+    itemsJ = JSON.stringify(this.list.BZtodo)
+    $.post("../server/post.php?"+this.urlqstr, {data: itemsJ}).done(function(data){});     
   },
   loadList: function(){
-    /*
-    var nqrep = 'list=BZtodo';
-    $.getJSON('../server/get.php', nqrep, function(data) {
-        var sdata= list.BZtodos = data.items;
-        localStorage.setItem('BZtodo',JSON.stringify(sdata));    
-    });
-    */
-    if(localStorage.BZtodo!=undefined){
-      this.list= JSON.parse(localStorage.BZtodo);
-      view.refreshList(this.list.BZtodo);
-    } 
+    $.get('../server/get.php', this.urlqstr, function(dataJ) {
+      console.log(!(dataJ==false));
+      if (!(dataJ==false)){
+        var data =JSON.parse(dataJ);
+        var items = JSON.parse(data.items);
+        ctrl.list.BZtodo = items;
+        view.refreshList(ctrl.list.BZtodo);
+        localStorage.setItem('BZtodo',JSON.stringify(ctrl.list));           
+      }
+    }); 
   },
   updDone: function(el){
     var done;

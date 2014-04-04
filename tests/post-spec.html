@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>post-spec tests</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+
+</head>
+<body>
+<a href="" id="post">post</a>
+<a href="" id="get">get</a>
+<form >
+  <input type"text"/> 
+  <input type="submit"/>
+</form>
+<script type="text/javascript">
+var na = {
+  item:''
+}
+var objn = {
+  BZtodo:[]
+}
+$('#post').click(function(){
+  event.preventDefault();
+  console.log(data.BZtodo);
+  var dataJ=JSON.stringify(data.BZtodo);
+  $.post("../server/post.php?list=BZtodo", {data: dataJ}).done(function(data){});
+})
+$('#get').click(function(){
+  event.preventDefault();
+  var nqrep = 'list=BZtodo';
+  $.get('../server/get.php', nqrep, function(dataJ) {
+    if (!dataJ){
+      console.log(dataJ);
+      var data =JSON.parse(dataJ);
+      var items = JSON.parse(data.items);
+      objn.BZtodo = items;
+      console.log(objn);
+      localStorage.setItem('BZtest', JSON.stringify(objn));      
+    }
+  });
+})
+$('form').submit(function(){
+  event.preventDefault();
+  na.item=$('input').val();
+  objn.BZtodo.push(na)
+  objnJ=JSON.stringify(objn);
+  console.log(objnJ);
+})
+
+var data = {"BZtodo":[{"item":"Read the reqs","done":true,"priority":0},{"item":"Meet some of the reqs","done":true,"priority":0},{"item":"Check boundary cases","done":true,"priority":0},{"item":"Add priority feature","done":true,"priority":0},{"item":"add ctrl and view objects","done":true,"priority":0},{"item":"Get something running","done":true,"priority":0},{"item":"Add simple validation","done":true,"priority":1},{"item":"Add sorting by complete","done":true,"priority":1},{"item":"Replace jquery events with events object","done":false,"priority":2},{"item":"Make it pretty","done":false,"priority":2},{"item":"read the reqs again","done":false,"priority":2},{"item":"set up server","done":false,"priority":2},{"item":"don't do this","done":false,"priority":1}]};  
+</script>
+</body>
+</html>
+
+
+
+
