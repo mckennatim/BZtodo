@@ -1,75 +1,56 @@
-$( document ).ready(function() {
 
-  ctrl.loadList();
-  console.log(ctrl.priorityOptions());
+  $( document ).ready(function() {
 
-  $('form').submit(function(){
-    var newItem = $('input').val();
-    if(newItem.length>1){
-      ctrl.addItem(newItem);
-    }
-    $('input').val('');
-    return false; 
+    model.loadList();
+    console.log(view.priorityOptions());
+
+    $('form').submit(function(){
+      var newItem = $('input').val();
+      if(newItem.length>1){
+        ctrl.add2List(newItem);
+      }
+      $('input').val('');
+      return false; 
+    });
+
+    $('input[type="checkbox"]').live('click',function(){
+      ctrl.updDone($(this));
+    }) 
+
+    $('.priority').live('change', function(){
+      console.log('firing on priority change');
+      ctrl.updPriority($(this));
+    }) 
+
+    $('a').live('click', function(){
+      ctrl.deleteItem($(this));
+      return false;
+    })
+
+    $('#sortDoneBut').click(function(){
+      console.log('sortDoneBut')
+      ctrl.sortOnDone();
+      return false;
+    })
+
+    $('#sortPriorBut').click(function(){
+      ctrl.sortOnPriority();
+      return false;
+    })
+
   });
 
-  $('input[type="checkbox"]').live('click',function(){
-    ctrl.updDone($(this));
-  }) 
 
-  $('#priority').live('change', function(){
-    ctrl.updPriority($(this));
-  }) 
-
-  $('a').live('click', function(){
-    ctrl.deleteItem($(this));
-    return false;
-  })
-
-  $('#sortDoneBut').click(function(){
-    ctrl.sortOnDone();
-    return false;
-  })
-
-  $('#sortPriorBut').click(function(){
-    ctrl.sortOnPriority();
-    return false;
-  })
-
-});
-
-var ctrl ={
+var model = {
   list: {BZtodo:[]},
   priority: ['high', 'normal', 'low'],
   defaultPriority: 'normal',
   urlqstr: 'list=BZtodo',
-  defaultPriorityIdx: 1,
-  priorityOptions: function(pridx){
-    var ostr= '<select id="priority">';
-    $.each(this.priority, function(index, opt){
-      if(index==pridx){
-        ostr+= '<option value='+index+' selected="selected">'+opt+'</option>';        
-      }else{
-        ostr+= '<option value='+index+'>'+opt+'</option>';        
-      }
-    })
-    ostr+='</select>';
-    return ostr;
-  },
-  addItem: function(item){
-    this.add2list(item);
-  },
-  add2list:function(item){
-    var itemObject ={
-      item: item,
-      done: false,
-      priority: this.defaultPriorityIdx
-    }
-    view.appendLi(itemObject);
-    this.list.BZtodo.push(itemObject);
-    this.saveList();
+  defaultPriorityIdx: 1, 
+  testData:{
+    name: 'Timothy Scott McKenna'
   },
   saveList: function(){
-    console.log(this.urlqstr);
     var listJ=JSON.stringify(this.list);
     localStorage.setItem('BZtodo', listJ);
     itemsJ = JSON.stringify(this.list.BZtodo)
@@ -81,11 +62,24 @@ var ctrl ={
       if (!(dataJ==false)){
         var data =JSON.parse(dataJ);
         var items = JSON.parse(data.items);
-        ctrl.list.BZtodo = items;
-        view.refreshList(ctrl.list.BZtodo);
-        localStorage.setItem('BZtodo',JSON.stringify(ctrl.list));           
+        model.list.BZtodo = items;
+        view.refreshList(model.list.BZtodo);
+        localStorage.setItem('BZtodo',JSON.stringify(model.list));           
       }
     }); 
+  } 
+}
+
+var ctrl ={
+  add2list:function(item){
+    var itemObject ={
+      item: item,
+      done: false,
+      priority: model.defaultPriorityIdx
+    }
+    view.appendLi(itemObject);
+    model.list.BZtodo.push(itemObject);
+    model.saveList();
   },
   updDone: function(el){
     var done;
@@ -95,36 +89,37 @@ var ctrl ={
       done=false
     }
     console.log(el.parent().index())
-    this.list.BZtodo[el.parent().index()].done=done;
-    this.saveList();
+    model.list.BZtodo[el.parent().index()].done=done;
+    model.saveList();
   },
   updPriority: function(el){
-    this.list.BZtodo[el.parent().index()].priority=el.val()*1;
-    this.saveList();
+    console.log(el.parent().parent());
+    model.list.BZtodo[el.parent().parent().index()].priority=el.val()*1;
+    model.saveList();
   },
   deleteItem: function(el){
-    var idx = el.parent().index();
+    var idx = el.parent().parent().index();
     if (idx > -1) {
-      this.list.BZtodo.splice(idx, 1);
+      model.list.BZtodo.splice(idx, 1);
     }
-    view.refreshList(this.list.BZtodo);
-    this.saveList();    
+    view.refreshList(model.list.BZtodo);
+    model.saveList();    
   },
   sortOnDone: function(){
-    this.list.BZtodo.sort(function(a,b){
+    model.list.BZtodo.sort(function(a,b){
       return a.done-b.done
     })
-    console.log(this.list.BZtodo)
-    view.refreshList(this.list.BZtodo);
-    this.saveList();
+    console.log(model.list.BZtodo)
+    view.refreshList(model.list.BZtodo);
+    model.saveList();
   },
   sortOnPriority: function(){
-    this.list.BZtodo.sort(function(a,b){
+    model.list.BZtodo.sort(function(a,b){
       return a.priority-b.priority
     })
-    console.log(this.list.BZtodo)
-    view.refreshList(this.list.BZtodo);
-    this.saveList();    
+    console.log(model.list.BZtodo)
+    view.refreshList(model.list.BZtodo);
+    model.saveList();    
   }
 
 } 
@@ -135,11 +130,14 @@ var view ={
     var priority = itemObj.priority;
     var checked='';
     if(itemObj.done){checked='checked="checked"'}
-    $('ul').append('<li>'
+    $('ul').append('<li class="list-group-item">'
       +'<input type="checkbox"'+checked+'/>'
       +'<span class="item"> '+ item +'</span>'
-      + ctrl.priorityOptions(priority)
-      +'<a href="">x</a>'
+      +'<span class="list-right">'
+      + this.priorityOptions(priority)
+      +'<a href="">'
+      +'<span class="glyphicon glyphicon-remove-sign"></span>'
+      +'</a></span>'
       +'</li>');
   },
   refreshList: function(list){
@@ -147,5 +145,17 @@ var view ={
     $.each(list, function(index, itemObj) {
       view.appendLi(itemObj);
     });
-  }
+  },
+  priorityOptions: function(pridx){
+    var ostr= '<select class="priority">';
+    $.each(model.priority, function(index, opt){
+      if(index==pridx){
+        ostr+= '<option value='+index+' selected="selected">'+opt+'</option>';        
+      }else{
+        ostr+= '<option value='+index+'>'+opt+'</option>';        
+      }
+    })
+    ostr+='</select>';
+    return ostr;
+  },  
 }
