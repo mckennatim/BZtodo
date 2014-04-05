@@ -1,45 +1,28 @@
+/*----------------------------Events-------------------------*/
 
-  $( document ).ready(function() {
-
-    model.loadList();
-    console.log(view.priorityOptions());
-
-    $('form').submit(function(){
-      var newItem = $('input').val();
-      if(newItem.length>1){
-        ctrl.add2List(newItem);
-      }
-      $('input').val('');
-      return false; 
-    });
-
-    $('input[type="checkbox"]').live('click',function(){
-      ctrl.updDone($(this));
-    }) 
-
-    $('.priority').live('change', function(){
-      console.log('firing on priority change');
-      ctrl.updPriority($(this));
-    }) 
-
-    $('a').live('click', function(){
-      ctrl.deleteItem($(this));
-      return false;
-    })
-
-    $('#sortDoneBut').click(function(){
-      console.log('sortDoneBut')
-      ctrl.sortOnDone();
-      return false;
-    })
-
-    $('#sortPriorBut').click(function(){
-      ctrl.sortOnPriority();
-      return false;
-    })
-
+$( document ).ready(function() {
+  model.loadList();
+  $('form').submit(function(){
+    ctrl.add2list(); 
   });
+  $('input[type="checkbox"]').live('click',function(){
+    ctrl.updDone($(this));
+  }) 
+  $('.priority').live('change', function(){
+    ctrl.updPriority($(this));
+  }) 
+  $('a').live('click', function(){
+    ctrl.deleteItem($(this));
+  })
+  $('#sortDoneBut').click(function(){
+    ctrl.sortOnDone();
+  })
+  $('#sortPriorBut').click(function(){
+    ctrl.sortOnPriority();
+  })
+});
 
+/*----------------------------Model-------------------------*/
 
 var model = {
   list: {BZtodo:[]},
@@ -47,9 +30,6 @@ var model = {
   defaultPriority: 'normal',
   urlqstr: 'list=BZtodo',
   defaultPriorityIdx: 1, 
-  testData:{
-    name: 'Timothy Scott McKenna'
-  },
   saveList: function(){
     var listJ=JSON.stringify(this.list);
     localStorage.setItem('BZtodo', listJ);
@@ -58,7 +38,6 @@ var model = {
   },
   loadList: function(){
     $.get('../server/get.php', this.urlqstr, function(dataJ) {
-      console.log(!(dataJ==false));
       if (!(dataJ==false)){
         var data =JSON.parse(dataJ);
         var items = JSON.parse(data.items);
@@ -70,16 +49,24 @@ var model = {
   } 
 }
 
+/*----------------------------Controller-------------------------*/
+
 var ctrl ={
   add2list:function(item){
-    var itemObject ={
-      item: item,
-      done: false,
-      priority: model.defaultPriorityIdx
+    event.preventDefault();
+    console.log($('#inpTxt').val())
+    var newItem = $('input').val();
+    if(newItem.length>1){  
+      var itemObject ={
+        item: newItem,
+        done: false,
+        priority: model.defaultPriorityIdx
+      }
+      view.appendLi(itemObject);
+      model.list.BZtodo.push(itemObject);
+      model.saveList();
     }
-    view.appendLi(itemObject);
-    model.list.BZtodo.push(itemObject);
-    model.saveList();
+    $('#inpTxt').val('');
   },
   updDone: function(el){
     var done;
@@ -88,16 +75,15 @@ var ctrl ={
     }else{
       done=false
     }
-    console.log(el.parent().index())
     model.list.BZtodo[el.parent().index()].done=done;
     model.saveList();
   },
   updPriority: function(el){
-    console.log(el.parent().parent());
     model.list.BZtodo[el.parent().parent().index()].priority=el.val()*1;
     model.saveList();
   },
   deleteItem: function(el){
+    event.preventDefault();
     var idx = el.parent().parent().index();
     if (idx > -1) {
       model.list.BZtodo.splice(idx, 1);
@@ -106,6 +92,7 @@ var ctrl ={
     model.saveList();    
   },
   sortOnDone: function(){
+    event.preventDefault();
     model.list.BZtodo.sort(function(a,b){
       return a.done-b.done
     })
@@ -113,6 +100,7 @@ var ctrl ={
     model.saveList();
   },
   sortOnPriority: function(){
+    event.preventDefault();
     model.list.BZtodo.sort(function(a,b){
       return a.priority-b.priority
     })
@@ -121,6 +109,8 @@ var ctrl ={
   }
 
 } 
+
+/*----------------------------View-------------------------*/
 
 var view ={
   appendLi: function(itemObj){
@@ -155,5 +145,5 @@ var view ={
     })
     ostr+='</select>';
     return ostr;
-  },  
+  } 
 }

@@ -6,6 +6,9 @@ form {
   width:400px;
   padding:4px;
 }
+#addBtn {
+  width:60px;
+}
 .list-right {
   float: right
 }
