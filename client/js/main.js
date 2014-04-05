@@ -109,7 +109,6 @@ var ctrl ={
     model.list.BZtodo.sort(function(a,b){
       return a.done-b.done
     })
-    console.log(model.list.BZtodo)
     view.refreshList(model.list.BZtodo);
     model.saveList();
   },
@@ -117,7 +116,6 @@ var ctrl ={
     model.list.BZtodo.sort(function(a,b){
       return a.priority-b.priority
     })
-    console.log(model.list.BZtodo)
     view.refreshList(model.list.BZtodo);
     model.saveList();    
   }
