@@ -4,7 +4,7 @@ Moving from OO jQuery PHP/MYSQL to Agile test-driven MVC, this code is an exerci
 ====/client====
 First it was a quick and dirty attempt to write in jQuery in a way that separates, as much as possible, the model, the controller and the view. Still I end up with HTML inside javascript strings, which is less than satisfying. 
 
-:I took a branch into using handlebars for templating but got a little frustrated with the simple method of script tags since I've come to be dependent on sublime text's formatting and completions which no longer work inside script tags. It seems much better to have partial views as html files but then you run into the problem of including and compiling those files as some pre-process script. Since windows .bat kinda sucks it forces you to think of using something like grunt. I'll wait to learn grunt until I have more things to deploy.
+:I took a branch into using handlebars for templating but got a little frustrated with the simple method of script tags since I've come to be dependent on Sublime text's formatting and completions which no longer work inside script tags. It seems much better to have partial views as html files but then you run into the problem of including and compiling those files as some pre-process script. Since windows .bat kinda sucks it forces you to think of using something like grunt. I'll wait to learn grunt until I have more things to deploy.
 running on http://cascada.sitebuilt.net/BZtodo/client/
 
 ====/clientNg====
