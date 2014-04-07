@@ -1,6 +1,6 @@
 ==BZtodo-An exercise in MVC==
 
-Moving from OO jQuery PHP/MYSQL to Agile test-driven MVC, this code is an exercise in front-end development comparing jQuery to AngularJS. 
+Moving from OO jQuery PHP/MYSQL to Agile test-driven MVC, this code is an exercise in front-end development comparing jQuery to AngularJS. It's a simple todo app. I had get something done in  an evening to show at a job interview. I quickly jettisoned my vow to only do test-driven development since I'm still learning it so it would have slowed me down.
 ====/client====
 First it was a quick and dirty attempt to write in jQuery in a way that separates, as much as possible, the model, the controller and the view. Still I end up with HTML inside javascript strings, which is less than satisfying. 
 
