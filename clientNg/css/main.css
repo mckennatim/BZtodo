@@ -1,0 +1,56 @@
+form {
+  margin-left:10px;
+  margin-top:5px;
+}
+#inpTxt {
+  width:400px;
+  padding:4px;
+}
+#addBtn {
+  width:60px;
+}
+.list-right {
+  float: right
+}
+.outer {
+  padding-top:5px;
+  margin-left:auto;
+  margin-right:auto;
+  width:70%;
+  background-color:#b0e0e6;
+}
+
+.item {
+  margin-left:10px;
+  padding: 30px
+  font-weight:bold;
+  font-size:1.3em;
+}
+.priority {
+  width:10.6em;
+  margin-right:10px ;
+  font-size: .8em;
+}
+input[type=checkbox]
+{
+  -webkit-transform: scale(1.5);
+  padding: 10px;
+}
+.button-group {
+  margin:5px 10px 5px 10px;
+}
+#sortPriorBut {
+  float: right;
+}
+@media (max-width: 468px) {
+  .item {font-size:34px;}
+  .outer {width:200px;}
+  input[type=checkbox]
+  .ckbox {-webkit-transform: scale(6);}  
+  .main { width:30%; }
+  .col1 { float: left; width:34%; }
+  .col2 {float: left; width:33%; }
+  .col3 {width:33%; } 
+  /* You can also tweak any other styles in a breakpoint */
+  H1 { color: blue; font-size:1.2em }
+}

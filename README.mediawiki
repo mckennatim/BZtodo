@@ -1,3 +1,12 @@
-==BZtodo==
+==BZtodo-An exercise in MVC==
 
+Moving from OO jQuery PHP/MYSQL to Agile test-driven MVC, this code is an exercise in front-end development comparing jQuery to AngularJS. 
+====/client/index.html====
+First it was a quick and dirty attempt to write in jQuery in a way that separates, as much as possible, the model, the controller and the view. Still I end up with HTML inside javascript strings, which is less than satisfying. 
+
+:I took a branch into using handlebars for templating but got a little frustrated with the simple method of script tags since I've come to be dependent on sublime text's formatting and completions which no longer work inside script tags. It seems much better to have partial views as html files but then you run into the problem of including and compiling those files as some pre-process script. Since windows .bat kinda sucks it forces you to think of using something like grunt. I'll wait to learn grunt until I have more things to deploy.
 running on http://cascada.sitebuilt.net/BZtodo/client/
+
+====/clientNg/index.html====
+Last night I decided it made more sense to use handlebars in a framework than using it raw. So I continue my MVC frameworks education using AngularJS for the same simple todo app. The state of this will be evolving and get pushed to http://cascada.sitebuilt.net/BZtodo/clientNg/ in stages when I get a chance to work on it.
+ 
